@@ -29,7 +29,7 @@ public class QuerystringController {
     }
 
     @GetMapping("/other")
-    public String myCoolMethod(@RequestParam(value = "type", defaultValue = "car") String type) {
+    public String myCoolMethod2(@RequestParam(value = "type", defaultValue = "car") String type) {
         return type;
     }
 
