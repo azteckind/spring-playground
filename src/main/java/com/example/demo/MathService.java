@@ -12,5 +12,14 @@ public class MathService {
             return Math.floorDiv(x, y);
         } //end of else-fi statement for division
         return Math.addExact(x,y);
-    } //end of public-static
+    } //end of public-static for math
+
+    public static Integer sum(Integer[] array) {
+        Integer sum = 0;
+
+        for(var i = 0; i < array.length; i++) {
+            sum += array[i];
+        } //end of for-loop
+        return sum;
+    } //end of public-static for sum
 } //Not re-inventing the wheel; using other smart people's formulas
