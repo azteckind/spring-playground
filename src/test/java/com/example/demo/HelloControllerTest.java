@@ -35,10 +35,5 @@ public class HelloControllerTest {
                 .andExpect(status().isOk());
     }//end of test
 
-    @Test
-    public void testingIndexEndpoint() throws Exception {
-        this.mvc.perform(get("/vehicles?year=1987%doors=2"))
-                .andExpect(status().isOk());
-    }//end of test
 
 }
