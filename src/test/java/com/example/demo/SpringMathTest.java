@@ -1,9 +1,12 @@
 package com.example.demo;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -62,5 +65,23 @@ public class SpringMathTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("6"));
     }//end of calculations of division
+
+    @Test
+    public void testingVolumeOfRectanglePost() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.post("/math/volume/3/4/5");
+
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string("The volume of a 3x4x5 rectangle is 60"));
+    }//end of POST-ing the volume of a rectangle
+
+    @Test
+    public void testingVolumeOfRectanglePatch() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.patch("/math/volume/6/7/8");
+
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string("The volume of a 6x7x8 rectangle is 336"));
+    }//end of PATCH-ing the volume of a rectangle
 
 }
