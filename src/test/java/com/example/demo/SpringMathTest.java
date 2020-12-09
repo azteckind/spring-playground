@@ -113,4 +113,16 @@ public class SpringMathTest {
 
     }//end of area of a rectangle
 
+    @Test
+    public void testingInvalidInput() throws Exception {
+        MockHttpServletRequestBuilder request = post("/math/area")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("type", "rectangle")
+                .param("radius", "5");
+
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string("Invalid"));
+    }//end of invalid inputs
+
 }
