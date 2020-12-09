@@ -27,4 +27,16 @@ public class SpringMath {
             return MathService.getVolumeString(pathVariables);
     }//Using RequestMapping, which covers both POST and PATCH, and 'cause I'm lazy an' don' wanna write this out twice
 
+    @PostMapping("/math/area")
+    public String area(@RequestParam Map<String, String> body) {
+        String type = body.get("type");
+        boolean hasCircleParams = type.equals("circle") && body.containsKey("radius");
+        boolean hasRectangleParams = type.equals("rectangle") && body.containsKey("width") && body.containsKey("height");
+        if(hasCircleParams || hasRectangleParams) {
+            return MathService.getArea(body);
+        }//end of if-statement
+        else {
+            return "Invalid";
+        }//end of else-statement
+    }
 }

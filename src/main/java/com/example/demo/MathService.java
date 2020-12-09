@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class MathService {
@@ -31,5 +32,27 @@ public class MathService {
         int height = Integer.parseInt(sideLengths.get("height"));
         int volume = length * width * height;
         return String.format("The volume of a %dx%dx%d rectangle is %d", length, width, height, volume);
+    }
+
+    public static String getArea(Map<String, String> body) {
+        String type = body.get("type");
+        StringBuilder outerString = new StringBuilder("Area of a ");
+        Locale locale = Locale.forLanguageTag("en-US");
+        if(type.equals("circle")) {
+            int radius = Integer.parseInt(body.get("radius"));
+            double area = Math.PI * Math.pow(radius, 2);
+
+            String endOfString = String.format(locale, "circle with a radius of %d is %.5f", radius, area);
+            outerString.append(endOfString);
+        }//end of if-statement
+        else if(type.equals("rectangle")) {
+            int width = Integer.parseInt(body.get("width"));
+            int height = Integer.parseInt(body.get("height"));
+            int area = width * height;
+
+            String endOfString = String.format(locale, "%dx%d rectangle is %d", width, height, area);
+            outerString.append(endOfString);
+        }//end of else-fi statement
+        return outerString.toString();
     }
 } //Not re-inventing the wheel; using other smart people's formulas
