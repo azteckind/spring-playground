@@ -20,20 +20,20 @@ public class HelloControllerTest {
     @Autowired
     MockMvc mvc;
 
-    @Test
-    public void testingHello() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.get("/hello");
-
-        this.mvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(content().string("Hello World"));
-    }//end of test
-
-    @Test
-    public void testingPI() throws Exception {
-        this.mvc.perform(get("/math/pi"))
-                .andExpect(status().isOk());
-    }//end of test
+//    @Test
+//    public void testingHello() throws Exception {
+//        RequestBuilder request = MockMvcRequestBuilders.get("/hello");
+//
+//        this.mvc.perform(request)
+//                .andExpect(status().isOk())
+//                .andExpect(content().string("Hello World"));
+//    }//end of test
+//
+//    @Test
+//    public void testingPI() throws Exception {
+//        this.mvc.perform(get("/math/pi"))
+//                .andExpect(status().isOk());
+//    }//end of test
 
 
 }
