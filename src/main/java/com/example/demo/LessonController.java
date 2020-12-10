@@ -4,11 +4,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/lessons")
-public class LessonsController {
+public class LessonController {
 
     private final LessonRepository repository;
 
-    public LessonsController(LessonRepository repository) {
+    public LessonController(LessonRepository repository) {
         this.repository = repository;
     }
 
