@@ -14,6 +14,16 @@ public class LessonsController {
         this.repository = repository;
     }
 
+    @GetMapping("")
+    public Iterable<Lesson> all() {
+        return this.repository.findAll();
+    }
+
+    @PostMapping("")
+    public Lesson create(@RequestBody Lesson lesson) {
+        return this.repository.save(lesson);
+    }
+
     @GetMapping("/{id}")
     public Optional<Lesson> findingByID(@PathVariable int id) {
         Long newId = (long) id;
@@ -25,16 +35,6 @@ public class LessonsController {
         this.repository.deleteById(id);
     }
 
-    @GetMapping("")
-    public Iterable<Lesson> all() {
-        return this.repository.findAll();
-    }
-
-    @PostMapping("")
-    public Lesson create(@RequestBody Lesson lesson) {
-        return this.repository.save(lesson);
-    }
-
     @PatchMapping("/{id}")
     public Optional<Lesson> updatingLesson(@PathVariable Long id, @RequestBody Lesson lesson) {
         Optional<Lesson> oldLesson = this.repository.findById(id);
@@ -44,6 +44,11 @@ public class LessonsController {
             this.repository.save(value);
         });
         return oldLesson;
+    }
+
+    @GetMapping("/find/{title}")
+    public void findingByTitle(@PathVariable String title) {
+        this.repository.findByTitle(title);
     }
 
 }
