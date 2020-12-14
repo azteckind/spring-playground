@@ -15,13 +15,13 @@ public class LessonsController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Lesson> findByID(@PathVariable int id) {
+    public Optional<Lesson> findingByID(@PathVariable int id) {
         Long newId = (long) id;
         return this.repository.findById(newId);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteByID(@PathVariable Long id) {
+    public void deletingByID(@PathVariable Long id) {
         this.repository.deleteById(id);
     }
 
