@@ -36,10 +36,14 @@ public class LessonsController {
     }
 
     @PatchMapping("/{id}")
-    public Lesson updateLesson(@PathVariable Long id, @RequestBody Lesson lesson) {
-        Lesson oldLesson = this.repository.findById(id).get();
-        lesson.setId(oldLesson.getId());
-        return this.repository.save(lesson);
+    public Optional<Lesson> updatingLesson(@PathVariable Long id, @RequestBody Lesson lesson) {
+        Optional<Lesson> oldLesson = this.repository.findById(id);
+        oldLesson.ifPresent(value -> {
+            value.setTitle(lesson.getTitle());
+            value.setDeliveredOn(lesson.getDeliveredOn());
+            this.repository.save(value);
+        });
+        return oldLesson;
     }
 
 }
