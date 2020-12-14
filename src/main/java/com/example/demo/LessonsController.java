@@ -2,6 +2,11 @@ package com.example.demo;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @RestController
@@ -49,6 +54,15 @@ public class LessonsController {
     @GetMapping("/find/{title}")
     public void findingByTitle(@PathVariable String title) {
         this.repository.findByTitle(title);
+    }
+
+    @GetMapping("/between")
+    public List<Lesson> findingInBetween(@RequestParam String date1, @RequestParam String date2) throws ParseException {
+        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Date localDate1 = formattedDate.parse(date1);
+        Date localDate2 = formattedDate.parse(date2);
+
+        return this.repository.findBetweenDates(localDate1, localDate2);
     }
 
 }

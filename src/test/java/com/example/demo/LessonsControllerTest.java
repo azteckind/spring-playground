@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -15,14 +14,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
-import static org.hamcrest.Matchers.is;
-
 
 
 @SpringBootTest
@@ -36,7 +32,6 @@ public class LessonsControllerTest {
 
     @Test
     @Transactional
-    @Rollback
     public void testingGetByID() throws Exception {
         MockHttpServletRequestBuilder request = get("/lessons/4");
 
@@ -48,8 +43,7 @@ public class LessonsControllerTest {
 
     @Test
     @Transactional
-    @Rollback
-    public void testingUpdateLesson() throws Exception {
+     public void testingUpdateLesson() throws Exception {
         String today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String title = "Spring Security";
         String json = String.format("{\"title\":\"%s\",\"deliveredOn\":\"%s\"}", title, today);
@@ -66,7 +60,6 @@ public class LessonsControllerTest {
 
     @Test
     @Transactional
-    @Rollback
     public void testingFindByTitle() throws Exception {
         Lesson lesson1 = new Lesson();
         lesson1.setTitle("BasketWeaving");
@@ -78,5 +71,27 @@ public class LessonsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", equalTo(lesson1.getTitle())));
     }
+
+    @Test
+    @Transactional
+    public void testingInBetweenDates() throws Exception {
+       Lesson lesson1 = new Lesson();
+       lesson1.setTitle("BeskarForging");
+       Date date1 = new Date();
+       lesson1.setDeliveredOn(date1);
+       repository.save(lesson1);
+
+       Lesson lesson2 = new Lesson();
+       lesson2.setTitle("PhoenixTraining");
+       Date date2 = new Date();
+       lesson2.setDeliveredOn(date2);
+       repository.save(lesson2);
+
+       this.mvc.perform(get("/lessons/between?date1=2014-01-01&date2=2017-12-31"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$[0].title", equalTo(lesson1.getTitle())));
+
+    }
+
 
 }
