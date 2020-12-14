@@ -13,7 +13,9 @@ import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,7 +37,7 @@ public class LessonsControllerTest {
     @Test
     @Transactional
     @Rollback
-    public void canGetByID() throws Exception {
+    public void testingGetByID() throws Exception {
         MockHttpServletRequestBuilder request = get("/lessons/4");
 
         this.mvc.perform(request)
@@ -47,7 +49,7 @@ public class LessonsControllerTest {
     @Test
     @Transactional
     @Rollback
-    public void canUpdateLesson() throws Exception {
+    public void testingUpdateLesson() throws Exception {
         String today = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String title = "Spring Security";
         String json = String.format("{\"title\":\"%s\",\"deliveredOn\":\"%s\"}", title, today);
@@ -60,6 +62,21 @@ public class LessonsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(5)))
                 .andExpect(jsonPath("$.title", is("Spring Security")));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testingFindByTitle() throws Exception {
+        Lesson lesson1 = new Lesson();
+        lesson1.setTitle("BasketWeaving");
+        Date date = new Date();
+        lesson1.setDeliveredOn(date);
+        repository.save(lesson1);
+
+        this.mvc.perform(get("/lessons/find/BasketWeaving"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", equalTo(lesson1.getTitle())));
     }
 
 }
